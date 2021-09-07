@@ -10,7 +10,7 @@
 | MySQL MariaDB | mysql  Ver 15.1 Distrib 10.5.12-MariaDB |
 | Apache | Apache/2.4.46 (Ubuntu) |
 | Bootstrap CSS | 4.0 |
-| jQuery CSS | 3.5.1 |
+| jQuery | 3.5.1 |
 | dataTables | 1.11.0 |
 
 ### Dependencies
