@@ -1,0 +1,105 @@
+################################################
+#
+#   settings and config
+#
+################################################
+
+#------------------------------------------------
+# Required packages
+#------------------------------------------------
+
+composer require monolog/monolog
+composer require jaxon-php/jaxon-core
+composer require parsecsv/php-parsecsv
+composer require voku/simple-mysqli
+composer require smarty/smarty
+composer require codeception/codeception --dev
+
+
+#composer suggest --all
+#composer require jaxon-php/jaxon-core:3.1
+#composer require jaxon-php/jaxon-dialogs
+
+#------------------------------------------------
+# SQL settings
+#------------------------------------------------
+
+# delete bookmarks when category is deleted
+ALTER TABLE bookmarks ADD FOREIGN KEY(categories_id) REFERENCES categories(categories_id) ON DELETE CASCADE;
+
+# set bookmarks categories 1 if categories is deleted
+ALTER TABLE bookmarks ADD FOREIGN KEY(categories_id) REFERENCES categories(categories_id) ON DELETE SET NULL;
+
+# make bookmarks_url UNIQUE
+ALTER TABLE `bookmarks` ADD UNIQUE (bookmarks_url);
+
+# make categories_name UNIQUE
+ALTER TABLE `categories` ADD UNIQUE (categories_name);
+
+# make bookmarks_id UNIQUE
+ALTER TABLE `favourites` ADD UNIQUE (bookmarks_id);
+
+################################################
+#
+#   packages
+#
+################################################
+
+https://codeception.com/docs/01-Introduction
+https://codeception.com/install
+https://github.com/parsecsv/parsecsv-for-php
+https://packagist.org/packages/voku/simple-mysqli
+https://packagist.org/packages/smarty/smarty
+https://packagist.org/packages/voku/simple-mysqli
+https://github.com/smarty-php/smarty
+https://www.smarty.net/crash_course
+https://www.smarty.net/documentation
+https://www.smarty.net/docs/en/installing.smarty.basic.tpl
+https://packagist.org/packages/voku/simple-mysqli
+https://www.unixtimestamp.com/
+
+################################################
+#
+#   codeception install and config
+#
+################################################
+
+composer require codeception/codeception --dev
+
+# Configuration file could not be found.
+# Run `bootstrap` to initialize Codeception.
+
+php vendor/bin/codecept bootstrap
+
+# Bootstrapping Codeception
+# File codeception.yml created       <- global configuration
+
+# Module Asserts is not installed.
+# Use Composer to install corresponding package:
+
+composer require codeception/module-asserts --dev
+
+---------------------------------------------------------------
+
+# create yml
+./vendor/bin/codecept generate:suite api
+./vendor/bin/codecept generate:suite unit
+
+# create test
+./vendor/bin/codecept generate:test unit Bookmarks
+./vendor/bin/codecept generate:test unit Categories
+./vendor/bin/codecept generate:test unit Favourites
+# php vendor/bin/codecept generate:test unit Bookmarks
+
+php vendor/bin/codecept run unit BookmarksTest
+php vendor/bin/codecept run unit
+
+./vendor/bin/codecept run unit BookmarksTest
+./vendor/bin/codecept run unit
+./vendor/bin/codecept run unit FavouritesTest --debug
+
+---------------------------------------------------------------
+
+echo ".idea/*" >> .gitignore
+echo ".nbproject/*" >> .gitignore
+git commit -am "remove .idea"
