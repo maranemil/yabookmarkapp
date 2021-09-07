@@ -13,3 +13,14 @@
 | Smarty - the compiling PHP template engine | https://packagist.org/packages/smarty/smarty
 | codeception BDD-style testing framework | https://packagist.org/packages/codeception/codeception
 
+## Home page
+
+![](https://github.com/maranemil/yabookmarkapp/blob/main/screens/1_bookmarks.png?raw=true)
+
+## Top Domains
+
+![](https://github.com/maranemil/yabookmarkapp/blob/main/screens/2_top_domains.png?raw=true)
+
+## Favourites
+
+![](https://github.com/maranemil/yabookmarkapp/blob/main/screens/3_favourites.png?raw=true)
