@@ -2,9 +2,17 @@
 
 ## Simple bookmark Web App made from scratch
 
+### Requirements
+
+| Package | Version |
+|---|---|
+| PHP  | 7.4.16 (cli) |
+| MySQL MariaDB | mysql  Ver 15.1 Distrib 10.5.12-MariaDB |
+| Apache | Apache/2.4.46 (Ubuntu) |
+
 ### Dependencies
 
-| Package | URL |
+| Packages | URL |
 |---|---|
 | Sends your logs to files | https://packagist.org/packages/monolog/monolog
 | Jaxon PHP library for Ajax web applications | https://packagist.org/packages/jaxon-php/jaxon-core
