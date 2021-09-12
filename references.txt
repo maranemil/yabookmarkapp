@@ -91,7 +91,7 @@ https://www.jaxon-php.org/docs/v2x/advanced/jquery.html
 https://github.com/jaxon-php/jaxon-core
 https://www.jaxon-php.org/docs/v2x/usage/installation.html
 https://www.jaxon-php.org/docs/v2x/plugins/response.html
-
+https://www.php.net/manual/en/function.get-current-user.php
 
 
 https://www.ictshore.com/php/php-project-structure/

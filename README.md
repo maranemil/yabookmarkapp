@@ -13,6 +13,23 @@
 | jQuery | 3.5.1 |
 | dataTables | 1.11.0 |
 
+
+### installation
+
+* git clone https://github.com/maranemil/yabookmarkapp
+* composer update 
+* mkdir templates_c
+* chmod 777 templates_c/
+
+### ignore sources
+
+echo ".idea/*" >> .gitignore
+echo ".nbproject/*" >> .gitignore
+echo "vendor/*" >> .gitignore
+echo "templates_c/*" >> .gitignore
+git commit .gitignore -m "remove .templates_c"
+
+
 ### Dependencies
 
 | Packages | URL |

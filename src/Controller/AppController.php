@@ -133,6 +133,8 @@ class AppController
     }
 
 
+
+
     /**
      * addBookmark
      *
@@ -206,6 +208,21 @@ class AppController
         $smarty->assign('CATEGORIES', $categories);
         $smarty->assign('OBJ_BOOKMARK', $oBookmark);
         $smarty->display('templates/edit_bookmark.tpl');
+    }
+
+    public function viewBookmark(){
+
+        $strAppNotifyMsg = "";
+
+        $oCategories = new Categories();
+        $categories = $oCategories->getCategories();
+        $oBookmark = Bookmarks::getInstance((int)$_GET["id"]);
+
+        $smarty = new Smarty;
+        $smarty->assign('APP_NOTIFY_MESSAGE', $strAppNotifyMsg);
+        $smarty->assign('CATEGORIES', $categories);
+        $smarty->assign('OBJ_BOOKMARK', $oBookmark);
+        $smarty->display('templates/view_bookmark.tpl');
     }
 
 

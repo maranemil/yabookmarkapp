@@ -7,6 +7,6 @@ class Database
 {
     public static function init()
     {
-        return DB::getInstance('localhost', 'abc', 'abc', 'yabookmarkapp');
+        return DB::getInstance('localhost', 'blabla', 'blabla', 'yabookmarkapp');
     }
 }

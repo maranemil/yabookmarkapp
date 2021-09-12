@@ -59,7 +59,7 @@
                                 </span>
                             {else}
                                 <a href="#"
-                                onclick="JaxonAppController.addFavourite({$OBJ_BOOKMARK->getBookmarksId()});return false;">
+                                    onclick="JaxonAppController.addFavourite({$OBJ_BOOKMARK->getBookmarksId()});return false;">
                                     <span class="badge badge-pill badge-info">
                                         <i class="fa fa-bookmark-o" aria-hidden="true"></i>
                                     </span>
@@ -67,17 +67,21 @@
                             {/if}
                         </td>
                         <td class="text-center">
-                            {assign var='URLS' value=explode('http',$OBJ_BOOKMARK->getBookmarksUrl())}
-                            {foreach from=$URLS item=item name=name}
-                                {if !empty($item)}
-                                    <a href="{$item|replace:'s:':''}" target="_blank" class="text-info">
-                                        <i class="fa fa-link"></i>
-                                    </a>
-                                {/if}
-                            {/foreach}
+                            {if (substr_count($OBJ_BOOKMARK->getBookmarksUrl(), "http") == 1)}
+                                <a href="{$OBJ_BOOKMARK->getBookmarksUrl()}" target="_blank" class="text-info">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            {else}
+                                <a href="view_bookmark.php?id={$OBJ_BOOKMARK->getBookmarksId()}" target="_blank" class="text-info">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            {/if}
                         </td>
                         <td>{Bookmarks::getTypeAsString($OBJ_BOOKMARK->getBookmarksType())}</td>
                         <td class="text-center text-nowrap">
+                            <a href="view_bookmark.php?id={$OBJ_BOOKMARK->getBookmarksId()}" target="_blank" class="text-info">
+                                <i class="fa fa-eye"></i>
+                            </a>
                             <a href="edit_bookmark.php?id={$OBJ_BOOKMARK->getBookmarksId()}" class="text-info">
                                 <i class="fa fa-edit"></i>
                             </a>
