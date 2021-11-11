@@ -256,10 +256,10 @@ class Bookmarks
     /**
      * getTopBookmarks
      *
-     * @return string
+     * @return mixed
      * @throws QueryException
      */
-    public function getTopBookmarks(): string
+    public function getTopBookmarks(): mixed
     {
         $db = Database::init();
         $result = $db->query("SELECT SUBSTRING_INDEX(bookmarks_url, '/', 3) AS url ,count(*) AS total FROM `bookmarks` GROUP BY url ORDER BY total DESC;");

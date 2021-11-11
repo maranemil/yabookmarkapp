@@ -37,14 +37,14 @@
                 </tr>
             </thead>
             <tbody>
-                {assign var="ARR_KEYS_FAVS" value=Favourites::getFavouritesBookmarks()}
+                {assign var="ARR_KEYS_FAVS" value=App\Classes\Favourites::getFavouritesBookmarks()}
                 {foreach $ARR_BOOKMARKS as $OBJ_BOOKMARK}
                     <tr id="row_book_{$OBJ_BOOKMARK->getBookmarksId()}">
                         <td>
                             {$OBJ_BOOKMARK->getBookmarksId()}
                         </td>
                         <td>
-                            {Categories::getInstance($OBJ_BOOKMARK->getCategoriesId())->getCategoriesName()}
+                            {App\Classes\Categories::getInstance($OBJ_BOOKMARK->getCategoriesId())->getCategoriesName()}
                         </td>
                         <td>
                             {$OBJ_BOOKMARK->getBookmarksHash()|date_format:'%d.%m.%Y'}
@@ -77,7 +77,7 @@
                                 </a>
                             {/if}
                         </td>
-                        <td>{Bookmarks::getTypeAsString($OBJ_BOOKMARK->getBookmarksType())}</td>
+                        <td>{App\Classes\Bookmarks::getTypeAsString($OBJ_BOOKMARK->getBookmarksType())}</td>
                         <td class="text-center text-nowrap">
                             <a href="view_bookmark.php?id={$OBJ_BOOKMARK->getBookmarksId()}" target="_blank" class="text-info">
                                 <i class="fa fa-eye"></i>

@@ -29,10 +29,10 @@
                             {$OBJ_FAVOURITES->getBookmarksId()}
                         </td>
                         <td>
-                            {Bookmarks::getInstance($OBJ_FAVOURITES->getBookmarksId())->getBookmarksName()}
+                            {App\Classes\Bookmarks::getInstance($OBJ_FAVOURITES->getBookmarksId())->getBookmarksName()}
                         </td>
                         <td>
-                            {assign var='URLS' value=explode('http',Bookmarks::getInstance($OBJ_FAVOURITES->getBookmarksId())->getBookmarksUrl())}
+                            {assign var='URLS' value=explode('http',App\Classes\Bookmarks::getInstance($OBJ_FAVOURITES->getBookmarksId())->getBookmarksUrl())}
 
                             {foreach from=$URLS item=item name=name}
                                 {if !empty($item)}
