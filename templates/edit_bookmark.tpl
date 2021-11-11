@@ -17,45 +17,52 @@
                 <tr>
                     <td class="col-sm-4">Bookmark Category</td>
                     <td>
-                        <select name="bookmark_category">
-                            {foreach from=$CATEGORIES item=item key=key name=name}
-                                <option value="{$item.categories_id}"
-                                        {if $item.categories_id eq $OBJ_BOOKMARK->getCategoriesId()}
-                                            selected
-                                        {/if}>
-                                    {$item.categories_name}
-                                </option>
-                            {/foreach}
-                        </select>
+                        <label>
+                            <select name="bookmark_category">
+                                {foreach from=$CATEGORIES item=item key=key name=name}
+                                    <option value="{$item.categories_id}"
+                                            {if $item.categories_id eq $OBJ_BOOKMARK->getCategoriesId()}
+                                                selected
+                                            {/if}>
+                                        {$item.categories_name}
+                                    </option>
+                                {/foreach}
+                            </select>
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Bookmark Name</td>
                     <td>
-                        <input type="text" name="bookmark_name" required
-                               value="{$OBJ_BOOKMARK->getBookmarksName()|capitalize}"
-                               class="w-100">
+                        <label>
+                            <input type="text" name="bookmark_name" required
+                                   value="{$OBJ_BOOKMARK->getBookmarksName()|capitalize}"
+                                   class="w-100">
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Bookmark Url</td>
                     <td>
-                        <textarea name="bookmark_url" required 
-                                  class="w-100" style="height: 150px;">{$OBJ_BOOKMARK->getBookmarksUrl()}</textarea>
+                        <label>
+                            <textarea name="bookmark_url" required class="w-100" style="height: 150px;">{$OBJ_BOOKMARK->getBookmarksUrl()}</textarea>
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Bookmark Type</td>
                     <td>
-                        <select name="bookmark_type" required>
-                            {foreach from=Bookmarks::arrBookmarkType item=item key=key name=name}                    
-                                <option value="{$key}"                        
-                                        {if $key eq $OBJ_BOOKMARK->getBookmarksType()}
-                                            selected
-                                        {/if}>
-                                    {$item}</option>
-                                {/foreach}
-                        </select>
+                        <label>
+                            <select name="bookmark_type" required>
+                                {foreach from=Bookmarks::arrBookmarkType item=item key=key name=name}
+                                    <option value="{$key}"
+                                            {if $key eq $OBJ_BOOKMARK->getBookmarksType()}
+                                                selected
+                                            {/if}>
+                                        {$item}</option>
+                                    {/foreach}
+                            </select>
+                        </label>
                     </td>
                 </tr>
                 <tr>

@@ -1,6 +1,7 @@
 <?php
-
-use Database;
+namespace App\Classes;
+#use Database;
+use voku\db\exceptions\QueryException;
 
 class Categories
 {
@@ -8,82 +9,84 @@ class Categories
     /**
      * intCategoriesId
      *
-     * @var undefined
+     * @var int
      */
-    private $intCategoriesId = null;    
+    private int $intCategoriesId = 0;
     /**
      * intCategoriesParent
      *
-     * @var undefined
+     * @var int
      */
-    private $intCategoriesParent = null;    
+    private int $intCategoriesParent = 0;
     /**
      * strCategoriesName
      *
-     * @var undefined
+     * @var string
      */
-    private $strCategoriesName = null;
+    private string $strCategoriesName = '';
     
     /**
      * getCategoriesId
      *
-     * @return void
+     * @return int
      */
-    public function getCategoriesId()
+    public function getCategoriesId(): int
     {
         return $this->intCategoriesId;
     }    
     /**
      * setCategoriesId
      *
-     * @param  mixed $intCategoriesId
+     * @param int $intCategoriesId
      * @return void
      */
-    public function setCategoriesId($intCategoriesId)
+    public function setCategoriesId(int $intCategoriesId)
     {
         $this->intCategoriesId = $intCategoriesId;
     }    
     /**
      * getCategoriesParent
      *
-     * @return void
+     * @return int
      */
-    public function getCategoriesParent()
+    public function getCategoriesParent(): int
     {
         return $this->intCategoriesParent;
     }    
     /**
      * setCategoriesParent
      *
-     * @param  mixed $intCategoriesParent
+     * @param int $intCategoriesParent
      * @return void
      */
-    public function setCategoriesParent($intCategoriesParent)
+    public function setCategoriesParent(int $intCategoriesParent)
     {
         $this->intCategoriesParent = $intCategoriesParent;
     }    
     /**
      * getCategoriesName
      *
-     * @return void
+     * @return string
      */
-    public function getCategoriesName()
+    public function getCategoriesName(): string
     {
         return Helper::sanitizeString($this->strCategoriesName);
     }    
     /**
      * setCategoriesName
      *
-     * @param  mixed $strCategoriesName
+     * @param string $strCategoriesName
      * @return void
      */
-    public function setCategoriesName($strCategoriesName)
+    public function setCategoriesName(string $strCategoriesName)
     {
         $this->strCategoriesName = Helper::sanitizeString($strCategoriesName);
     }
 
     /**
+     * @param $id
      * @return Categories
+     * @throws QueryException
      */
     public static function loadFromDB($id): Categories
     {
@@ -104,7 +107,9 @@ class Categories
     }
 
     /**
+     * @param null $id
      * @return Categories
+     * @throws QueryException
      */
     public static function getInstance($id = null): Categories
     {
@@ -117,13 +122,15 @@ class Categories
 
     /**
      * @return Categories[]
+     * @throws QueryException
      */
-    public static function getInstances()
+    public static function getInstances(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM categories");
         $arrFetchCategories  = (array)$result->fetchAll();
         $arrTmp = json_decode(json_encode($arrFetchCategories), true);
+        $arrInstances = [];
         foreach ($arrTmp as $arrCategory) {
             $oCategory = Categories::getInstance($arrCategory["categories_id"]);
             $arrInstances[$oCategory->getCategoriesId()] = $oCategory;
@@ -133,8 +140,10 @@ class Categories
 
     /**
      * @return array
+     * @throws QueryException
+     * @noinspection PhpUnused
      */
-    public function getCategories()
+    public function getCategories(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM categories");
@@ -143,7 +152,8 @@ class Categories
     }
 
     /**
-     * @description - save and upate
+     * @description - save and update
+     * @throws QueryException
      */
     public function save()
     {
@@ -171,6 +181,7 @@ class Categories
 
     /**
      * @return void
+     * @throws QueryException
      */
     public function delete(): void
     {

@@ -17,37 +17,44 @@
                 <tr>
                     <td class="col-sm-4">Bookmark Category</td>
                     <td>
-                        <select name="bookmark_category">
-                            {foreach from=$CATEGORIES item=item key=key name=name}
-                                <option value="{$item.categories_id}">
-                                    {$item.categories_name}
-                                </option>
-                            {/foreach}
-                        </select>
+                        <label>
+                            <select name="bookmark_category">
+                                {foreach from=$CATEGORIES item=item key=key name=name}
+                                    <option value="{$item.categories_id}">
+                                        {$item.categories_name}
+                                    </option>
+                                {/foreach}
+                            </select>
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Bookmark Name</td>
                     <td>
-                        <input type="text" name="bookmark_name" required
-                               class="w-100">
+                        <label>
+                            <input type="text" name="bookmark_name" required
+                                   class="w-100">
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Bookmark Url</td>
                     <td>
-                        <textarea name="bookmark_url" required 
-                                  class="w-100" style="height: 150px;"></textarea>
+                        <label>
+                            <textarea name="bookmark_url" required class="w-100" style="height: 150px;"></textarea>
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Bookmark Type</td>
                     <td>
-                        <select name="bookmark_type" required>
-                            {foreach from=Bookmarks::arrBookmarkType item=item key=key name=name}
-                                <option value="{$key}">{$item}</option>
-                            {/foreach}
-                        </select>
+                        <label>
+                            <select name="bookmark_type" required>
+                                {foreach from=Bookmarks::arrBookmarkType item=item key=key name=name}
+                                    <option value="{$key}">{$item}</option>
+                                {/foreach}
+                            </select>
+                        </label>
                     </td>
                 </tr>
                 <tr>

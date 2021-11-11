@@ -15,7 +15,7 @@
         </ul>
     </div>
     <div class="tab-select-outer">
-        <select id="tab-select">
+        <label for="tab-select"></label><select id="tab-select">
             <option value="#tab01">Bookmarks</option>
             <option value="#tab02">Categories</option>
         </select>

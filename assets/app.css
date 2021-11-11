@@ -1,7 +1,7 @@
 /* tabs styles */
 
 .tabs {
-  max-width: auto;
+  max-width: inherit;
   margin: 0 auto;
   padding: 0 20px;
 }

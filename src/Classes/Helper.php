@@ -1,34 +1,36 @@
 <?php
-
+namespace App\Classes;
 class Helper
 {
     /**
      * sanitizeString
      *
-     * @param  mixed $input
-     * @return void
+     * @param string $input
+     * @return string
      */
-    public static function sanitizeString($input)
+    public static function sanitizeString(string $input): string
     {
         return preg_replace('/[^A-Za-z0-9\-]/', ' ', $input);
     }
     /**
      * sanitizeInteger
      *
-     * @param  mixed $input
-     * @return void
+     * @param int $input
+     * @return int
+     * @noinspection PhpUnused
      */
-    public static function sanitizeInteger($input)
+    public static function sanitizeInteger(int $input): int
     {
-        return (int)$input;
+        return $input;
     }
 
     /**
      * sanitizeUrl
      *
-     * @return void
+     * @param $input
+     * @return string
      */
-    public static function sanitizeUrl($input)
+    public static function sanitizeUrl($input): string
     {
         return filter_var($input, FILTER_SANITIZE_STRING);
     }

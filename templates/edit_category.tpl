@@ -17,21 +17,25 @@
                 <tr>
                     <td>Category Parent</td>
                     <td>
-                        <select name="category_parent">
-                            {foreach from=$CATEGORIES item=item key=key name=name}
-                                <option value="{$item.categories_id}"
-                                        {if $OBJ_CATEGORY->getCategoriesParent() eq $item.categories_id}selected{/if}>
-                                    {$item.categories_name}
-                                </option>
-                            {/foreach}
-                        </select>
+                        <label>
+                            <select name="category_parent">
+                                {foreach from=$CATEGORIES item=item key=key name=name}
+                                    <option value="{$item.categories_id}"
+                                            {if $OBJ_CATEGORY->getCategoriesParent() eq $item.categories_id}selected{/if}>
+                                        {$item.categories_name}
+                                    </option>
+                                {/foreach}
+                            </select>
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Category Name</td>
                     <td>
-                        <input type="text" name="category_name"
-                               required value="{$OBJ_CATEGORY->getCategoriesName()}">
+                        <label>
+                            <input type="text" name="category_name"
+                                   required value="{$OBJ_CATEGORY->getCategoriesName()}">
+                        </label>
                     </td>
                 </tr>
                 <tr>

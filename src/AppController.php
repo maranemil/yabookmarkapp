@@ -1,7 +1,17 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
+namespace App;
+use App\Classes\Bookmarks;
+use App\Classes\Categories;
+use App\Classes\Favourites;
+use App\Classes\Helper;
+use Exception;
+use Jaxon\Exception\Error;
 use Jaxon\Jaxon;
 use Jaxon\Response\Response;
+use Smarty;
+use SmartyException;
+use voku\db\exceptions\QueryException;
 
 #use voku\db\DB;
 #use ParseCsv\Csv;
@@ -16,6 +26,8 @@ class AppController
      * index
      *
      * @return void
+     * @throws QueryException
+     * @throws SmartyException
      */
     public function index()
     {
@@ -35,6 +47,7 @@ class AppController
      * topBookmarks
      *
      * @return void
+     * @throws QueryException|SmartyException
      */
     public function topBookmarks()
     {
@@ -49,6 +62,7 @@ class AppController
      * favourites
      *
      * @return void
+     * @throws QueryException|SmartyException
      */
     public function favourites()
     {
@@ -60,11 +74,11 @@ class AppController
     }
 
 
-
     /**
      * addCategory
      *
      * @return void
+     * @throws QueryException|SmartyException
      */
     public function addCategory()
     {
@@ -97,6 +111,8 @@ class AppController
      * editCategory
      *
      * @return void
+     * @throws QueryException|SmartyException
+     * @throws Exception
      */
     public function editCategory()
     {
@@ -133,12 +149,11 @@ class AppController
     }
 
 
-
-
     /**
      * addBookmark
      *
      * @return void
+     * @throws QueryException|SmartyException
      */
     public function addBookmark()
     {
@@ -176,6 +191,7 @@ class AppController
      * editBookmark
      *
      * @return void
+     * @throws QueryException|SmartyException
      */
     public function editBookmark()
     {
@@ -210,6 +226,9 @@ class AppController
         $smarty->display('templates/edit_bookmark.tpl');
     }
 
+    /**
+     * @throws QueryException|SmartyException
+     */
     public function viewBookmark(){
 
         $strAppNotifyMsg = "";
@@ -226,8 +245,10 @@ class AppController
     }
 
 
-
-    public function removeCategory($intId)
+    /**
+     * @throws QueryException
+     */
+    public function removeCategory($intId): Response
     {
 
         $oCategories = Categories::getInstance($intId);
@@ -240,7 +261,10 @@ class AppController
         return $response;
     }
 
-    public function removeBookmark($intId)
+    /**
+     * @throws QueryException
+     */
+    public function removeBookmark($intId): Response
     {
 
         $oBookmark = Bookmarks::getInstance($intId);
@@ -252,7 +276,10 @@ class AppController
         return $response;
     }
 
-    public function removeFavourite($intId)
+    /**
+     * @throws QueryException
+     */
+    public function removeFavourite($intId): Response
     {
 
         $oFavourite = Favourites::getInstance($intId);
@@ -264,7 +291,10 @@ class AppController
         return $response;
     }
 
-    public function addFavourite($intBookmarkId)
+    /**
+     * @throws QueryException
+     */
+    public function addFavourite($intBookmarkId): Response
     {
         $oFavourite = new Favourites();
         $oFavourite->setBookmarksId($intBookmarkId);
@@ -276,18 +306,20 @@ class AppController
     }
 
 
-
-
-    public function exportBookmarks()
+    /**
+     * @throws QueryException
+     */
+    public function exportBookmarks(): void
     {
-        $oBookmark = Bookmarks::getBookmarksAsCSV();
+        Bookmarks::getBookmarksAsCSV();
     }
 
 
-
-
-
-    public function sayHello($isCaps)
+    /**
+     * @param $isCaps
+     * @return Response
+     */
+    public function sayHello($isCaps): Response
     {
 
         /*
@@ -314,4 +346,8 @@ $jaxon = jaxon();
 // Register an instance of the class with Jaxon
 $jaxon->register(Jaxon::CALLABLE_OBJECT, new AppController()); // v2.x
 // Call the Jaxon processing engine
-$jaxon->processRequest();
+try {
+    $jaxon->processRequest();
+} catch (Error $e) {
+    echo $e->getMessage();
+}

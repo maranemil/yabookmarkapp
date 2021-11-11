@@ -1,24 +1,46 @@
 <?php
+namespace App\Classes;
+use voku\db\exceptions\QueryException;
 
 class Favourites
 {
 
-    private $iFavouritesId = null;
-    private $iBookmarksId = null;
+    /**
+     * @var int
+     */
+    private int $iFavouritesId = 0;
+    /**
+     * @var int
+     */
+    private int $iBookmarksId = 0;
 
-    public function getFavouritesId()
+    /**
+     * @return int
+     */
+    public function getFavouritesId(): int
     {
         return $this->iFavouritesId;
     }
+
+    /**
+     * @param $iFavouritesId
+     */
     public function setFavouritesId($iFavouritesId)
     {
         $this->iFavouritesId = $iFavouritesId;
     }
 
-    public function getBookmarksId()
+    /**
+     * @return int
+     */
+    public function getBookmarksId(): int
     {
         return $this->iBookmarksId;
     }
+
+    /**
+     * @param $iBookmarksId
+     */
     public function setBookmarksId($iBookmarksId)
     {
         $this->iBookmarksId = $iBookmarksId;
@@ -27,22 +49,23 @@ class Favourites
     /**
      * loadFromDB
      *
-     * @param  mixed $id
+     * @param int $id
      * @return Favourites
+     * @throws QueryException
      */
-    public static function loadFromDB($id): Favourites
+    public static function loadFromDB(int $id): Favourites
     {
         $db = Database::init();
         $strSQL = "SELECT * FROM favourites WHERE favourites_id=" . $id;
         $result = $db->query($strSQL);
-        $arrFetchFavourites  = (array)$result->fetchAll();
+        $arrFetchFavourites = (array)$result->fetchAll();
         $arrFavourites = json_decode(json_encode($arrFetchFavourites), true);
         $arrFavourite = array_shift($arrFavourites);
 
-         // create object
-         $oFavourites = new Favourites();
-         $oFavourites->setFavouritesId($arrFavourite["favourites_id"]);
-         $oFavourites->setBookmarksId($arrFavourite["bookmarks_id"]);         
+        // create object
+        $oFavourites = new Favourites();
+        $oFavourites->setFavouritesId($arrFavourite["favourites_id"]);
+        $oFavourites->setBookmarksId($arrFavourite["bookmarks_id"]);
 
         return $oFavourites;
     }
@@ -50,10 +73,11 @@ class Favourites
     /**
      * getInstance
      *
-     * @param  mixed $id
+     * @param int|null $id
      * @return Favourites
+     * @throws QueryException
      */
-    public static function getInstance($id = null): Favourites
+    public static function getInstance(?int $id = null): Favourites
     {
         if (is_null($id)) {
             return new Favourites();
@@ -64,13 +88,15 @@ class Favourites
 
     /**
      * @return Favourites[]
+     * @throws QueryException
      */
-    public static function getInstances()
+    public static function getInstances(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM favourites");
-        $arrFetchFavourites  = (array)$result->fetchAll();
+        $arrFetchFavourites = (array)$result->fetchAll();
         $arrTmp = json_decode(json_encode($arrFetchFavourites), true);
+        $arrInstances = [];
         foreach ($arrTmp as $arrFavourite) {
             $oFavourite = Favourites::getInstance($arrFavourite["favourites_id"]);
             $arrInstances[$oFavourite->getFavouritesId()] = $oFavourite;
@@ -80,25 +106,35 @@ class Favourites
 
     /**
      * @return array
+     * @throws QueryException
+     * @noinspection PhpUnused
      */
-    public function getFavourites()
+    public function getFavourites(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM favourites");
-        $arrFetchFavourites  = (array)$result->fetchAll();
+        $arrFetchFavourites = (array)$result->fetchAll();
         return json_decode(json_encode($arrFetchFavourites), true);
     }
 
-    public static function getFavouritesBookmarks(){
+    /**
+     * @return array
+     * @throws QueryException
+     * @noinspection PhpUnused
+     */
+    public static function getFavouritesBookmarks(): array
+    {
         $aFavourites = self::getInstances();
-        foreach($aFavourites as $oFavourite){
+        $aFavBookmarks = [];
+        foreach ($aFavourites as $oFavourite) {
             $aFavBookmarks[$oFavourite->getBookmarksId()] = $oFavourite->getBookmarksId();
         }
         return $aFavBookmarks;
     }
 
     /**
-     * @description - save and upate
+     * @description - save and update
+     * @throws QueryException
      */
     public function save()
     {
@@ -123,6 +159,7 @@ class Favourites
 
     /**
      * @return void
+     * @throws QueryException
      */
     public function delete(): void
     {

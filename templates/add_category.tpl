@@ -17,19 +17,23 @@
                 <tr>
                     <td>Category Parent</td>
                     <td>
-                        <select name="category_parent">
-                            {foreach from=$CATEGORIES item=item key=key name=name}
-                                <option value="{$item.categories_id}">
-                                    {$item.categories_name}
-                                </option>
-                            {/foreach}
-                        </select>
+                        <label>
+                            <select name="category_parent">
+                                {foreach from=$CATEGORIES item=item key=key name=name}
+                                    <option value="{$item.categories_id}">
+                                        {$item.categories_name}
+                                    </option>
+                                {/foreach}
+                            </select>
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td>Category Name</td>
                     <td>
-                        <input type="text" name="category_name" required>
+                        <label>
+                            <input type="text" name="category_name" required>
+                        </label>
                     </td>
                 </tr>
                 <tr>
