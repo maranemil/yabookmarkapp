@@ -6,8 +6,7 @@ include_once "config/settings.php";
 
 try {
     $o = new AppController();
-    $o->editBookmark();  
-
+    $o->editBookmark();
 } catch (Exception $e) {
     echo $e->getMessage();
 }

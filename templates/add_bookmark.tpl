@@ -1,6 +1,5 @@
 {include file='../templates/page_header.tpl'}
 
-
 <div class="row">
     <div class=" rounded  col-sm-12  p-sm-3">
         <h3 class="bolder white ml-3">Add Bookmark</h3>
@@ -68,7 +67,5 @@
         </form>
     </div>
 </div>
-
-
 
 {include file='../templates/page_footer.tpl'}

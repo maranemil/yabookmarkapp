@@ -1,6 +1,5 @@
 {include file='../templates/page_header.tpl'}
 
-
 <div class="row">
     <div class="rounded col-sm-12 p-sm-3">
         <h3 class="bolder white ml-3">Bookmarks / Categories</h3>
@@ -130,10 +129,6 @@
     </div>
 </div>
 
-
-
-
-
 {* <div class="row mt-4">
     <div class="col-sm-12">
 
@@ -144,6 +139,5 @@
 
     </div>
 </div> *}
-
 
 {include file='../templates/page_footer.tpl'}
