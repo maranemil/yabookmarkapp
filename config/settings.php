@@ -4,7 +4,6 @@
 ini_set('error_reporting', 1);
 ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
-
 ini_set('log_errors', 1);
 ini_set("error_log", "/home/" . get_current_user() . "/Web/yabookmarkapp/php-error.log");
 

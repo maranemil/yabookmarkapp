@@ -7,16 +7,16 @@ class BookmarksTest extends \Codeception\Test\Unit
      */
     protected $tester;
     
-    protected function _before()
+    protected function _before(): void
     {
     }
 
-    protected function _after()
+    protected function _after(): void
     {
     }
 
     // tests
-    public function testSomeFeature()
+    public function testSomeFeature(): void
     {
 
     }

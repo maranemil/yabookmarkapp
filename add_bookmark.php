@@ -7,8 +7,7 @@ include_once "src/Classes/Bookmarks.php";
 
 try {
     $o = new AppController();
-    $o->addBookmark();  
-
+    $o->addBookmark();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
