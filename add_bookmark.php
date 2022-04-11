@@ -3,7 +3,7 @@
 use App\AppController;
 
 include_once "config/settings.php";
-#include_once "src/Controller/AppController.php";
+include_once "src/Classes/Bookmarks.php";
 
 try {
     $o = new AppController();

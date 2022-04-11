@@ -37,24 +37,29 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <div class="collapse navbar-collapse container" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active mr-2">
-                    <a class="nav-link" href="index.php">Home
+                <li class="nav-item active bolder ml-2">
+                    <a class="nav-link active" href="index.php">
+                        <strong>YABMA Bookmarks</strong>
+                    </a>
+                </li>
+                <li class="nav-item active ml-2">
+                    <a class="nav-link btn-warning" href="index.php">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="top_bookmarks.php">Top Bookmarks</a>
+                <li class="nav-item ">
+                    <a class="nav-link btn-success ml-2" href="top_bookmarks.php">Top Bookmarks</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="favourites.php">Favourites</a>
+                <li class="nav-item ">
+                    <a class="nav-link btn-success ml-2" href="favourites.php">Favourites</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="add_category.php">Add Category</a>
+                <li class="nav-item ">
+                    <a class="nav-link btn-success ml-2" href="add_category.php">Add Category</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="add_bookmark.php">Add Bookmark</a>
+                <li class="nav-item ">
+                    <a class="nav-link btn-success ml-2" href="add_bookmark.php">Add Bookmark</a>
                 </li>
                 {* <li class="nav-item active">
                     <a class="nav-link" href="export_bookmark.php">Export Bookmarks</a>
@@ -66,4 +71,4 @@
     <main role="main">
         <div id="container" class="abstract">
             <div id="content">
-<div class="my-app-container">
+                <div class="my-app-container container">

@@ -15,6 +15,11 @@ ini_set('max_execution_time', 30);
 $APP_ROOT_YBMA = str_replace(basename(__DIR__), "", __DIR__);
 define('APP_ROOT_YBMA', $APP_ROOT_YBMA);
 
+define('YBMA_APP_DB_HOST', 'localhost');
+define('YBMA_APP_DB_NAME', 'yabookmarkapp');
+define('YBMA_APP_DB_USER', 'jeffrey');
+define('YBMA_APP_DB_PASS', 'password');
+
 require_once APP_ROOT_YBMA . '/vendor/autoload.php';
 
 /**

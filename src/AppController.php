@@ -1,6 +1,11 @@
-<?php /** @noinspection PhpUnused */
+<?php /** @noinspection StaticInvocationViaThisInspection */
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+/** @noinspection SpellCheckingInspection */
+
+/** @noinspection PhpUnused */
 
 namespace App;
+
 use App\Classes\Bookmarks;
 use App\Classes\Categories;
 use App\Classes\Favourites;
@@ -9,6 +14,8 @@ use Exception;
 use Jaxon\Exception\Error;
 use Jaxon\Jaxon;
 use Jaxon\Response\Response;
+use JsonException;
+use RuntimeException;
 use Smarty;
 use SmartyException;
 use voku\db\exceptions\QueryException;
@@ -28,8 +35,9 @@ class AppController
      * @return void
      * @throws QueryException
      * @throws SmartyException
+     * @throws JsonException
      */
-    public function index()
+    public function index(): void
     {
         $oCategories = new Categories();
         $aCategories = $oCategories->getInstances();
@@ -48,8 +56,9 @@ class AppController
      *
      * @return void
      * @throws QueryException|SmartyException
+     * @throws JsonException
      */
-    public function topBookmarks()
+    public function topBookmarks(): void
     {
         $oBookmarks = new Bookmarks();
         $aTopBookmarks = $oBookmarks->getTopBookmarks();
@@ -63,8 +72,9 @@ class AppController
      *
      * @return void
      * @throws QueryException|SmartyException
+     * @throws JsonException
      */
-    public function favourites()
+    public function favourites(): void
     {
         $oFavourites = new Favourites();
         $aFavourites = $oFavourites->getInstances();
@@ -79,8 +89,9 @@ class AppController
      *
      * @return void
      * @throws QueryException|SmartyException
+     * @throws JsonException
      */
-    public function addCategory()
+    public function addCategory(): void
     {
 
         $strAppNotifyMsg = "";
@@ -114,7 +125,7 @@ class AppController
      * @throws QueryException|SmartyException
      * @throws Exception
      */
-    public function editCategory()
+    public function editCategory(): void
     {
         $strAppNotifyMsg = "";
 
@@ -124,8 +135,8 @@ class AppController
             $intCategoryParent = Helper::sanitizeInteger($_POST["category_parent"]);
             $strCategoryName = Helper::sanitizeString($_POST["category_name"]);
 
-            if ($intCategoryId == $intCategoryParent) {
-                throw new Exception("Parent category is identical with category");
+            if ($intCategoryId === $intCategoryParent) {
+                throw new RuntimeException("Parent category is identical with category");
             }
 
             $oCategory = Categories::getInstance($intCategoryId);
@@ -154,8 +165,9 @@ class AppController
      *
      * @return void
      * @throws QueryException|SmartyException
+     * @throws JsonException
      */
-    public function addBookmark()
+    public function addBookmark(): void
     {
 
         $strAppNotifyMsg = "";
@@ -180,9 +192,12 @@ class AppController
         $oCategories = new Categories();
         $categories = $oCategories->getCategories();
 
+        $bookmark_types = Bookmarks::getBookmarkType();
+
         $smarty = new Smarty;
         $smarty->assign('APP_NOTIFY_MESSAGE', $strAppNotifyMsg);
         $smarty->assign('CATEGORIES', $categories);
+        $smarty->assign('BOOKMARK_TYPES', $bookmark_types);
         $smarty->display('templates/add_bookmark.tpl');
     }
 
@@ -192,8 +207,9 @@ class AppController
      *
      * @return void
      * @throws QueryException|SmartyException
+     * @throws JsonException
      */
-    public function editBookmark()
+    public function editBookmark(): void
     {
         $strAppNotifyMsg = "";
 
@@ -228,8 +244,10 @@ class AppController
 
     /**
      * @throws QueryException|SmartyException
+     * @throws JsonException
      */
-    public function viewBookmark(){
+    public function viewBookmark(): void
+    {
 
         $strAppNotifyMsg = "";
 
@@ -247,6 +265,7 @@ class AppController
 
     /**
      * @throws QueryException
+     * @throws JsonException
      */
     public function removeCategory($intId): Response
     {
@@ -256,13 +275,14 @@ class AppController
 
         $response = new Response();
         #$response->jQuery('#message')->html('Yaba daba doo')->css('color', 'blue');
-        $response->jQuery('#row_cat_' . $intId . '')->remove();
+        $response->jQuery('#row_cat_' . $intId)->remove();
         $response->alert("deleted " . $intId);
         return $response;
     }
 
     /**
      * @throws QueryException
+     * @throws JsonException
      */
     public function removeBookmark($intId): Response
     {
@@ -271,13 +291,14 @@ class AppController
         $oBookmark->delete();
 
         $response = new Response();
-        $response->jQuery('#row_book_' . $intId . '')->remove();
+        $response->jQuery('#row_book_' . $intId)->remove();
         $response->alert("deleted " . $intId);
         return $response;
     }
 
     /**
      * @throws QueryException
+     * @throws JsonException
      */
     public function removeFavourite($intId): Response
     {
@@ -286,7 +307,7 @@ class AppController
         $oFavourite->delete();
 
         $response = new Response();
-        $response->jQuery('#row_fav_' . $intId . '')->remove();
+        $response->jQuery('#row_fav_' . $intId)->remove();
         $response->alert("deleted " . $intId);
         return $response;
     }
@@ -308,6 +329,7 @@ class AppController
 
     /**
      * @throws QueryException
+     * @throws JsonException
      */
     public function exportBookmarks(): void
     {

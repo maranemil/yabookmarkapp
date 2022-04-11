@@ -1,7 +1,17 @@
 <?php
+
+/** @noinspection PhpUnused */
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+/** @noinspection SqlDialectInspection */
+/** @noinspection StaticInvocationViaThisInspection */
+
+
 namespace App\Classes;
+
 #use Database;
+
 use JetBrains\PhpStorm\Pure;
+use JsonException;
 use ParseCsv\Csv;
 use voku\db\exceptions\QueryException;
 
@@ -11,11 +21,13 @@ class Bookmarks
     /**
      * const
      */
-    public const arrBookmarkType = [
-        0 => "bookmark",
-        2 => "notice",
-        1 => "collection",
-    ];
+    public const arrBookmarkType
+        = [
+            0 => "bookmark",
+            1 => "collection",
+            2 => "notice",
+
+        ];
 
     /**
      * intBookmarksId
@@ -70,7 +82,7 @@ class Bookmarks
      * @param mixed $intBookmarksId
      * @return void
      */
-    public function setBookmarksId(mixed $intBookmarksId)
+    public function setBookmarksId(mixed $intBookmarksId): void
     {
         $this->intBookmarksId = $intBookmarksId;
     }
@@ -91,7 +103,7 @@ class Bookmarks
      * @param int $intCategoriesId
      * @return void
      */
-    public function setCategoriesId(int $intCategoriesId)
+    public function setCategoriesId(int $intCategoriesId): void
     {
         $this->intCategoriesId = $intCategoriesId;
     }
@@ -112,7 +124,7 @@ class Bookmarks
      * @param string $strBookmarksHash
      * @return void
      */
-    public function setBookmarksHash(string $strBookmarksHash)
+    public function setBookmarksHash(string $strBookmarksHash): void
     {
         $this->strBookmarksHash = $strBookmarksHash;
     }
@@ -133,7 +145,7 @@ class Bookmarks
      * @param string $strBookmarksName
      * @return void
      */
-    public function setBookmarksName(string $strBookmarksName)
+    public function setBookmarksName(string $strBookmarksName): void
     {
         $this->strBookmarksName = Helper::sanitizeString($strBookmarksName);
     }
@@ -153,7 +165,7 @@ class Bookmarks
      *
      * @param string $strBookmarksUrl
      */
-    public function setBookmarksUrl(string $strBookmarksUrl)
+    public function setBookmarksUrl(string $strBookmarksUrl): void
     {
         $this->strBookmarksUrl = Helper::sanitizeUrl($strBookmarksUrl);
     }
@@ -173,7 +185,7 @@ class Bookmarks
      *
      * @param int $intBookmarksType
      */
-    public function setBookmarksType(int $intBookmarksType)
+    public function setBookmarksType(int $intBookmarksType): void
     {
         $this->intBookmarksType = $intBookmarksType;
     }
@@ -182,18 +194,20 @@ class Bookmarks
      * @param $id
      * @return Bookmarks
      * @throws QueryException
+     * @throws JsonException
      */
     public static function loadFromDB($id): Bookmarks
     {
         $db = Database::init();
         $strSQL = "SELECT * FROM bookmarks WHERE bookmarks_id=" . $id;
         $result = $db->query($strSQL);
-        $arrFetchBookmarks = (array)$result->fetchAll();
-        $arrBookmarks = json_decode(json_encode($arrFetchBookmarks), true);
+        $arrFetchBookmarks = $result->fetchAll();
+        $arrBookmarks = json_decode(json_encode($arrFetchBookmarks, JSON_THROW_ON_ERROR), true, 512,
+            JSON_THROW_ON_ERROR);
         $arrBookmark = array_shift($arrBookmarks);
 
         // create object
-        $oBookmark = new Bookmarks();
+        $oBookmark = new self();
         $oBookmark->setBookmarksId($arrBookmark["bookmarks_id"]);
         $oBookmark->setCategoriesId($arrBookmark["categories_id"]);
         $oBookmark->setBookmarksHash($arrBookmark["bookmarks_hash"]);
@@ -208,29 +222,30 @@ class Bookmarks
      * @param int|null $id
      * @return Bookmarks
      * @throws QueryException
+     * @throws JsonException
      */
     public static function getInstance(?int $id = null): Bookmarks
     {
         if (is_null($id)) {
-            return new Bookmarks();
-        } else {
-            return self::loadFromDB($id);
+            return new self();
         }
+
+        return self::loadFromDB($id);
     }
 
     /**
      * @return Bookmarks[]
-     * @throws QueryException
+     * @throws QueryException|JsonException
      */
     public static function getInstances(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM bookmarks");
-        $arrFetchBookmarks = (array)$result->fetchAll();
-        $arrTmp = json_decode(json_encode($arrFetchBookmarks), true);
+        $arrFetchBookmarks = $result->fetchAll();
+        $arrTmp = json_decode(json_encode($arrFetchBookmarks, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $arrInstances = [];
         foreach ($arrTmp as $arrBookmark) {
-            $oBookmark = Bookmarks::getInstance($arrBookmark["bookmarks_id"]);
+            $oBookmark = self::getInstance($arrBookmark["bookmarks_id"]);
             $arrInstances[$oBookmark->getBookmarksId()] = $oBookmark;
         }
         return $arrInstances;
@@ -241,6 +256,7 @@ class Bookmarks
      *
      * @return array
      * @throws QueryException
+     * @throws JsonException
      * @noinspection PhpUnused
      */
     public function getBookmarks(): array
@@ -248,8 +264,8 @@ class Bookmarks
 
         $db = Database::init();
         $result = $db->query("SELECT * FROM bookmarks");
-        $arrFetchBookmarks = (array)$result->fetchAll();
-        return json_decode(json_encode($arrFetchBookmarks), true);
+        $arrFetchBookmarks = $result->fetchAll();
+        return json_decode(json_encode($arrFetchBookmarks, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
     }
 
 
@@ -258,13 +274,14 @@ class Bookmarks
      *
      * @return mixed
      * @throws QueryException
+     * @throws JsonException
      */
     public function getTopBookmarks(): mixed
     {
         $db = Database::init();
         $result = $db->query("SELECT SUBSTRING_INDEX(bookmarks_url, '/', 3) AS url ,count(*) AS total FROM `bookmarks` GROUP BY url ORDER BY total DESC;");
-        $arrFetchBookmarks = (array)$result->fetchAll();
-        return json_decode(json_encode($arrFetchBookmarks), true);
+        $arrFetchBookmarks = $result->fetchAll();
+        return json_decode(json_encode($arrFetchBookmarks, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
     }
 
 
@@ -285,16 +302,18 @@ class Bookmarks
      *
      * @return void
      * @throws QueryException
+     * @throws JsonException
      */
-    public static function getBookmarksAsCSV()
+    public static function getBookmarksAsCSV(): void
     {
 
         // Read CSV
         // $csv = new \ParseCsv\Csv();
         // $csv->auto('data.csv');
         // print_r($csv->data);
+
         $data_array = [];
-        $oBookmarks = Bookmarks::getInstances();
+        $oBookmarks = self::getInstances();
         foreach ($oBookmarks as $oBookmark) {
             $data_array[] = array(
                 $oBookmark->getBookmarksId(),
@@ -324,10 +343,10 @@ class Bookmarks
      * @description - save and update
      * @throws QueryException
      */
-    public function save()
+    public function save(): void
     {
 
-        $id = $this->getBookmarksId() ?? 'NULL';
+        $id = $this->getBookmarksId() ?: null;
         $db = Database::init();
 
         $strSQL = "INSERT INTO `bookmarks`         
@@ -369,5 +388,13 @@ class Bookmarks
         $strSQL = "DELETE FROM  `bookmarks` 
                 WHERE bookmarks_id=  " . $this->getBookmarksId();
         $db->execSQL($strSQL);
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getBookmarkType(): array
+    {
+        return self::arrBookmarkType;
     }
 }

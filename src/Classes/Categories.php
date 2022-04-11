@@ -1,11 +1,18 @@
-<?php
+<?php /** @noinspection SqlDialectInspection */
+/** @noinspection StaticInvocationViaThisInspection */
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
+
 namespace App\Classes;
+
 #use Database;
 use voku\db\exceptions\QueryException;
 
 class Categories
 {
-    
+
     /**
      * intCategoriesId
      *
@@ -24,7 +31,7 @@ class Categories
      * @var string
      */
     private string $strCategoriesName = '';
-    
+
     /**
      * getCategoriesId
      *
@@ -33,7 +40,8 @@ class Categories
     public function getCategoriesId(): int
     {
         return $this->intCategoriesId;
-    }    
+    }
+
     /**
      * setCategoriesId
      *
@@ -43,7 +51,8 @@ class Categories
     public function setCategoriesId(int $intCategoriesId)
     {
         $this->intCategoriesId = $intCategoriesId;
-    }    
+    }
+
     /**
      * getCategoriesParent
      *
@@ -52,7 +61,8 @@ class Categories
     public function getCategoriesParent(): int
     {
         return $this->intCategoriesParent;
-    }    
+    }
+
     /**
      * setCategoriesParent
      *
@@ -62,7 +72,8 @@ class Categories
     public function setCategoriesParent(int $intCategoriesParent)
     {
         $this->intCategoriesParent = $intCategoriesParent;
-    }    
+    }
+
     /**
      * getCategoriesName
      *
@@ -71,7 +82,8 @@ class Categories
     public function getCategoriesName(): string
     {
         return Helper::sanitizeString($this->strCategoriesName);
-    }    
+    }
+
     /**
      * setCategoriesName
      *
@@ -87,18 +99,20 @@ class Categories
      * @param $id
      * @return Categories
      * @throws QueryException
+     * @throws \JsonException
      */
     public static function loadFromDB($id): Categories
     {
         $db = Database::init();
         $strSQL = "SELECT * FROM categories WHERE categories_id=" . $id;
         $result = $db->query($strSQL);
-        $arrFetchCategories  = (array)$result->fetchAll();
-        $arrCategories = json_decode(json_encode($arrFetchCategories), true);
+        $arrFetchCategories = $result->fetchAll();
+        $arrCategories = json_decode(json_encode($arrFetchCategories, JSON_THROW_ON_ERROR), true, 512,
+            JSON_THROW_ON_ERROR);
         $arrCategory = array_shift($arrCategories);
 
         // create object
-        $oCategories = new Categories();
+        $oCategories = new self();
         $oCategories->setCategoriesId($arrCategory["categories_id"]);
         $oCategories->setCategoriesParent($arrCategory["categories_parent"]);
         $oCategories->setCategoriesName($arrCategory["categories_name"]);
@@ -110,29 +124,31 @@ class Categories
      * @param null $id
      * @return Categories
      * @throws QueryException
+     * @throws \JsonException
      */
     public static function getInstance($id = null): Categories
     {
         if (is_null($id)) {
-            return new Categories();
-        } else {
-            return self::loadFromDB($id);
+            return new self();
         }
+
+        return self::loadFromDB($id);
     }
 
     /**
      * @return Categories[]
      * @throws QueryException
+     * @throws \JsonException
      */
     public static function getInstances(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM categories");
-        $arrFetchCategories  = (array)$result->fetchAll();
-        $arrTmp = json_decode(json_encode($arrFetchCategories), true);
+        $arrFetchCategories = $result->fetchAll();
+        $arrTmp = json_decode(json_encode($arrFetchCategories, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $arrInstances = [];
         foreach ($arrTmp as $arrCategory) {
-            $oCategory = Categories::getInstance($arrCategory["categories_id"]);
+            $oCategory = self::getInstance($arrCategory["categories_id"]);
             $arrInstances[$oCategory->getCategoriesId()] = $oCategory;
         }
         return $arrInstances;
@@ -141,24 +157,25 @@ class Categories
     /**
      * @return array
      * @throws QueryException
+     * @throws \JsonException
      * @noinspection PhpUnused
      */
     public function getCategories(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM categories");
-        $arrFetchCategories  = (array)$result->fetchAll();
-        return json_decode(json_encode($arrFetchCategories), true);
+        $arrFetchCategories = $result->fetchAll();
+        return json_decode(json_encode($arrFetchCategories, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
      * @description - save and update
      * @throws QueryException
      */
-    public function save()
+    public function save(): void
     {
 
-        $id = $this->getCategoriesId() ?? 'NULL';
+        $id = $this->getCategoriesId() ?: null;
         $db = Database::init();
 
         $strSQL = "INSERT INTO `categories`         

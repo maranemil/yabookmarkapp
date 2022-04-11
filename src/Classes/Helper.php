@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Classes;
+
 class Helper
 {
     /**
@@ -12,6 +14,7 @@ class Helper
     {
         return preg_replace('/[^A-Za-z0-9\-]/', ' ', $input);
     }
+
     /**
      * sanitizeInteger
      *

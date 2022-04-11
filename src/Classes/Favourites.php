@@ -1,5 +1,14 @@
 <?php
+
+/** @noinspection SqlDialectInspection */
+/** @noinspection AmbiguousMethodsCallsInArrayMappingInspection */
+/** @noinspection StaticInvocationViaThisInspection */
+
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 namespace App\Classes;
+
+use JsonException;
 use voku\db\exceptions\QueryException;
 
 class Favourites
@@ -25,7 +34,7 @@ class Favourites
     /**
      * @param $iFavouritesId
      */
-    public function setFavouritesId($iFavouritesId)
+    public function setFavouritesId($iFavouritesId): void
     {
         $this->iFavouritesId = $iFavouritesId;
     }
@@ -41,7 +50,7 @@ class Favourites
     /**
      * @param $iBookmarksId
      */
-    public function setBookmarksId($iBookmarksId)
+    public function setBookmarksId($iBookmarksId): void
     {
         $this->iBookmarksId = $iBookmarksId;
     }
@@ -52,18 +61,20 @@ class Favourites
      * @param int $id
      * @return Favourites
      * @throws QueryException
+     * @throws JsonException
      */
     public static function loadFromDB(int $id): Favourites
     {
         $db = Database::init();
         $strSQL = "SELECT * FROM favourites WHERE favourites_id=" . $id;
         $result = $db->query($strSQL);
-        $arrFetchFavourites = (array)$result->fetchAll();
-        $arrFavourites = json_decode(json_encode($arrFetchFavourites), true);
+        $arrFetchFavourites = $result->fetchAll();
+        $arrFavourites = json_decode(json_encode($arrFetchFavourites, JSON_THROW_ON_ERROR), true, 512,
+            JSON_THROW_ON_ERROR);
         $arrFavourite = array_shift($arrFavourites);
 
         // create object
-        $oFavourites = new Favourites();
+        $oFavourites = new self();
         $oFavourites->setFavouritesId($arrFavourite["favourites_id"]);
         $oFavourites->setBookmarksId($arrFavourite["bookmarks_id"]);
 
@@ -76,29 +87,31 @@ class Favourites
      * @param int|null $id
      * @return Favourites
      * @throws QueryException
+     * @throws JsonException
      */
     public static function getInstance(?int $id = null): Favourites
     {
         if (is_null($id)) {
-            return new Favourites();
-        } else {
-            return self::loadFromDB($id);
+            return new self();
         }
+
+        return self::loadFromDB($id);
     }
 
     /**
      * @return Favourites[]
      * @throws QueryException
+     * @throws JsonException
      */
     public static function getInstances(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM favourites");
-        $arrFetchFavourites = (array)$result->fetchAll();
-        $arrTmp = json_decode(json_encode($arrFetchFavourites), true);
+        $arrFetchFavourites = $result->fetchAll();
+        $arrTmp = json_decode(json_encode($arrFetchFavourites, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $arrInstances = [];
         foreach ($arrTmp as $arrFavourite) {
-            $oFavourite = Favourites::getInstance($arrFavourite["favourites_id"]);
+            $oFavourite = self::getInstance($arrFavourite["favourites_id"]);
             $arrInstances[$oFavourite->getFavouritesId()] = $oFavourite;
         }
         return $arrInstances;
@@ -107,19 +120,21 @@ class Favourites
     /**
      * @return array
      * @throws QueryException
+     * @throws JsonException
      * @noinspection PhpUnused
      */
     public function getFavourites(): array
     {
         $db = Database::init();
         $result = $db->query("SELECT * FROM favourites");
-        $arrFetchFavourites = (array)$result->fetchAll();
-        return json_decode(json_encode($arrFetchFavourites), true);
+        $arrFetchFavourites = $result->fetchAll();
+        return json_decode(json_encode($arrFetchFavourites, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
      * @return array
      * @throws QueryException
+     * @throws JsonException
      * @noinspection PhpUnused
      */
     public static function getFavouritesBookmarks(): array
@@ -136,10 +151,10 @@ class Favourites
      * @description - save and update
      * @throws QueryException
      */
-    public function save()
+    public function save(): void
     {
 
-        $id = $this->getFavouritesId() ?? 'NULL';
+        $id = $this->getFavouritesId() ?: null;
         $db = Database::init();
 
         $strSQL = "INSERT INTO `favourites`         

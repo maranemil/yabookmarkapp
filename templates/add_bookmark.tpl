@@ -50,8 +50,8 @@
                     <td>
                         <label>
                             <select name="bookmark_type" required>
-                                {foreach from=Bookmarks::arrBookmarkType item=item key=key name=name}
-                                    <option value="{$key}">{$item}</option>
+                                {foreach $BOOKMARK_TYPES as $key => $name}
+                                    <option value="{$key}">{$name}</option>
                                 {/foreach}
                             </select>
                         </label>
